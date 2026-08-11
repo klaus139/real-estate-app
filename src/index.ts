@@ -4,9 +4,14 @@ import express from "express";
 import { Request, Response } from "express";
 import apiRouter from "./routes/index";
 
+import { connectToDatabase  } from "./config/database";
+
 dotenv.config();
 
 const app = express();
+
+connectToDatabase();
+
 
 app.use(cors());
 app.use(express.json());

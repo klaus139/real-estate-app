@@ -16,7 +16,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "express": "^4.22.2"
+    "express": "^4.22.2",
+    "mongoose": "^9.9.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
