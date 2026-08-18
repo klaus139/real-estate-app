@@ -1,11 +1,10 @@
-//define the routes for the auth routes
 import { Router } from "express";
 import { validate } from "../../middleware/validate";
 import { registerSchema, loginSchema } from "../../models/auth.schema";
 
-const authRouter = Router();
+const router = Router();
 
-authRouter.post(
+router.post(
   "/register",
   validate(registerSchema, "body"),
   (req, res) => {
@@ -16,7 +15,7 @@ authRouter.post(
   }
 );
 
-authRouter.post(
+router.post(
   "/login",
   validate(loginSchema, "body"),
   (req, res) => {
@@ -27,4 +26,4 @@ authRouter.post(
   }
 );
 
-export default authRouter;
+export default router;
