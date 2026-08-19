@@ -32,3 +32,5 @@ src/
   models/           ← types / schemas
   middleware/       ← auth, validation, errors
 ```
+## User Registration
+Note: Prefer creating users via POST /api/auth/register
