@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-// import { Error } from "../utils/error.js";
+import { createError } from "../utils/error";
 
-export const errorHandler = ( err: Error, req: Request, res: Response, next: NextFunction ) => {
-    if ( err instanceof Error ) {
-        return res.status(404).send(
-            {
-                message: "Page Not Found" }
-            );
+export const errorHandler = ( err: any, req: Request, res: Response, next: NextFunction ) => {
+    if ( err && typeof err.formatErrors === "function" ) {
+        return res.status( err.statusCode ).send(
+            { error: err.formatErrors() }
+        )
     } 
-    return res.status(400).send({ errors: [{ message: "Something is wrong with this" }]
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               );
+    return res.status(400).send({ errors: [{ message: "Something went wrong" }] 
+    })
+
 };

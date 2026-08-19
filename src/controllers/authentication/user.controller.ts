@@ -6,8 +6,9 @@ import dotenv from "dotenv";
 
 // export class UserController {
 
-// readonly JWT_SECRET = process?.env?.JWT_SECRET ?? "";
-// // Function to generate JWT token
+readonly JWT_SECRET = process?.env?.JWT_SECRET ?? "";
+
+// Function to generate JWT token
 
   export async function signup(req: Request, res: Response): Promise<void> {
     try {
