@@ -10,6 +10,6 @@ router.get("/", (req: Request, res: Response) => {
   });
 });
 
-router.use("/auth", authRouter);
+router.use("/api/auth", authRouter);
 
 export default router;

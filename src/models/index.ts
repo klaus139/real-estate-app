@@ -18,20 +18,22 @@ const userSchema = new Schema<IUser>({
     },
     role:{
         type:String,
-        required:true,
+        required:false,
         enum:UserRole
     },
     phone:{
         type:String,
-        required:true,
+        required:false,
     },
-    isVerifed:{
+    isVerified:{
         type:Boolean,
         default:false
     },
-    
+    verificationToken:{
+        type: String,
+    },
 }, { timestamps: true });
 
 const User = model<IUser>("User", userSchema);
 
-export default User;
+export  { User };

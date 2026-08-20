@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
-import crypto from 'crypto';
-import { sendVerificationEmail, sendPasswordResetEmail } from '../../services/emailService';
+import crypto from 'crypto'; 
+import bcrypt from 'bcrypt'; 
+import { User } from '../../models/index';
+import { sendVerificationEmail } from '../../services/emailService';
 
-//  REGISTER USER & SEND VERIFICATION EMAIL
+//  Register User & Send Verification Email
 export const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
@@ -12,14 +14,17 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Email already registered' });
     }
 
-    // Generate token
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds)
+
+    // Generate secret random token
     const verificationToken = crypto.randomBytes(32).toString('hex');
 
-    // Save user to DB (unverified)
+    // Create user in DB 
     const newUser = await User.create({
-      username,
+      name: username,
       email,
-      password,
+      password: hashedPassword,
       isVerified: false,
       verificationToken,
     });
@@ -35,51 +40,29 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-//  VERIFY EMAIL TOKEN (Triggered when user clicks email link)
+//  Verify Email Token (When user clicks link)
 export const verifyEmail = async (req: Request, res: Response) => {
   try {
     const { token } = req.query;
+    const verificationToken = Array.isArray(token) ? token[0] : token;
 
-    if (!token) {
+    if (!verificationToken) {
       return res.status(400).json({ message: 'Verification token is required' });
     }
 
-    const user = await User.findOne({ verificationToken: token });
+    const user = await User.findOne({ verificationToken: verificationToken as string });
     if (!user) {
       return res.status(400).json({ message: 'Invalid or expired token' });
     }
 
-    user.isVerified = true;
-    user.verificationToken = undefined; 
-    await user.save();
+    // Set user as verified and remove token
+    await User.updateOne(
+      { _id: user._id },
+      { isVerified: true, verificationToken: null }
+    );
 
     res.status(200).json({ message: 'Email verified successfully! You can now log in.' });
   } catch (error) {
     res.status(500).json({ message: 'Error verifying email', error });
-  }
-};
-
-//  REQUEST PASSWORD RESET & SEND RESET EMAIL
-export const forgotPassword = async (req: Request, res: Response) => {
-  try {
-    const { email } = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      // Return 200 for security so attackers can't probe valid emails
-      return res.status(200).json({ message: 'If that email exists, a reset link has been sent.' });
-    }
-
-    // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    user.resetPasswordToken = resetToken;
-    await user.save();
-
-    // Send password reset email
-    await sendPasswordResetEmail(user.email, resetToken);
-
-    res.status(200).json({ message: 'Password reset link sent to your email.' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error requesting password reset', error });
   }
 };

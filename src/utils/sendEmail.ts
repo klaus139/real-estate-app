@@ -1,10 +1,14 @@
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 interface SendEmailOptions {
   to: string;
   subject: string;
   text: string; // Plain text only
 }
+
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',

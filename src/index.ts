@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { Request, Response } from "express";
 import apiRouter from "./routes/index";
+import authRouter from "./routes/auth/auth.routes";
 
 import { connectToDatabase  } from "./config/database";
 
@@ -20,6 +21,7 @@ app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok" });
 });
 
+app.use('/api/auth', authRouter);
 app.use("/api", apiRouter);
 
 // Students: mount routes under /api (properties, users, inquiries, auth, …)

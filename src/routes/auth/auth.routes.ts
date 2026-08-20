@@ -1,13 +1,10 @@
-//define the routes for the auth routes
-
 import { Router } from "express";
+import { register, verifyEmail } from "../../controllers/authentication/auth.controller";
 
 const authRouter = Router();
 
-//define the auth routes
-authRouter.post("/register", (req, res) => {
-  res.json({ message: "User registered successfully and other things" });
-});
-
+// Define the auth routes
+authRouter.post("/register", register);
+authRouter.get("/verify-email", verifyEmail);
 
 export default authRouter;

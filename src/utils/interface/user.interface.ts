@@ -8,6 +8,7 @@ export interface IUser {
     password:string;
     phone:string;
     role:UserRole;
-    isVerifed:boolean
+    isVerified:boolean;
+    verificationToken: string | null;
    
 }
