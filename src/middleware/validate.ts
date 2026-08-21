@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { z, ZodType } from "zod";
-import { registerSchema, loginSchema } from "../models/auth.schema";
+import { Schema } from "../utils/validator";
 
 export const validate = (
-  schema: ZodType,
+  schema: Schema<any>,
   source: "body" | "params" | "query"
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -13,10 +12,7 @@ export const validate = (
       return res.status(400).json({
         error: {
           message: "Validation failed",
-          fields: result.error.issues.map((issue) => ({
-            field: issue.path.join("."),
-            message: issue.message,
-          })),
+          fields: result.issues,
         },
       });
     }
