@@ -1,5 +1,5 @@
 import { IUser } from "../utils/interfaces/user.interface";
-import { userRole } from "../utils/types/user.types";
+import { UserRole } from "../utils/types/user.types";
 import { Schema, model } from "mongoose";
 
 const userSchema = new Schema <IUser> ({
@@ -12,7 +12,7 @@ const userSchema = new Schema <IUser> ({
         required: true,
         unique: true,
     },
-    passwordHash: {
+    password: {
         type: String,
         required: true,
     },
@@ -23,8 +23,8 @@ const userSchema = new Schema <IUser> ({
     role: {
         type: String,
         required: true,
-        enum: userRole,
-        default: userRole.BUYER,
+        enum: UserRole,
+        default: UserRole.BUYER,
     },
     isVerified: {
         type: Boolean,

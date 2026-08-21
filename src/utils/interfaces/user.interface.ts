@@ -1,20 +1,11 @@
 import { Types } from "mongoose";
-import { userRole } from "../types/user.types";
+import { UserRole } from "../types/user.types";
 
-export interface IUser {
-    _id: Types.ObjectId;
-    fullName: String;
-    email: String;
-    passwordHash: String;
-    phone: String;
-    role: userRole;
-    isVerified: boolean;
-}
 
 export interface IPublicUser {
     _id: Types.ObjectId;
     fullName: String;
-    role: userRole;
+    role: UserRole;
     isVerified: boolean;
 }
 
@@ -23,12 +14,11 @@ export interface ICreateUserInput {
     email: String;
     passwordHash: String;
 }
-import { Types } from "mongoose";
-import { UserRole } from "../types/user.types";
+
 
 export interface IUser {
   _id: Types.ObjectId;
-  name: string;
+  fullName: string;
   email: string;
   password: string;
   phone?: string;
