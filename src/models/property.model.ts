@@ -10,7 +10,7 @@ const addressSchema = new Schema<IAddress>(
     state: { type: String, required: true },
     country: { type: String, required: true },
   },
-  { _id: false } // it's an embedded object, not its own collection — no need for an _id
+  { _id: false }
 );
 
 const propertySchema = new Schema<IPropertyDocument>(
