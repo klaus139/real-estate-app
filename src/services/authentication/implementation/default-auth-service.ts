@@ -1,6 +1,8 @@
 import { AuthRepository } from "../../../repository/auth.repository";
 import { IRegisterUserPayload, ILoginUserPayload } from "../../../utils/interfaces/auth.interface";
 import { AuthService } from "../auth.service";
+import publicUser from "../../../utils/helpers/user.helper"
+import { IPublicUser } from "../../../utils/interfaces/user.interface";
 
 export class DefaultAuthService implements AuthService {
     private authRepository: AuthRepository;
@@ -39,7 +41,13 @@ export class DefaultAuthService implements AuthService {
         // This could involve validating the payload, checking the user's credentials, and returning a token or session information
         throw new Error("Method not implemented.");
     }
+    async GetUserById(id: string): Promise<IPublicUser | null> {
+        const user = await this.authRepository.findById(id);
 
-   
-    
+        if (!user) {
+            return null;
+        }
+
+        return publicUser(user);    
+    }
 }

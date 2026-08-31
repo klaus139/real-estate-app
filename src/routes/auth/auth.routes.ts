@@ -2,6 +2,8 @@
 import { Router } from "express";
 import { validate } from "../../middleware/validate";
 import { registerSchema, loginSchema } from "../../models/auth.schema";
+import { requireAuth} from "../../middleware/auth";
+import { getCurrentUser } from "../../controllers/authentication/auth.controller";
 
 const authRouter = Router();
 
@@ -26,5 +28,6 @@ authRouter.post(
     });
   }
 );
+authRouter.get("/me", requireAuth, getCurrentUser);
 
 export default authRouter;
