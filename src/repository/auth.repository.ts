@@ -7,4 +7,8 @@ export class AuthRepository {
         const user = await User.findOne({ email: email });
         return user|| null;
     }
+    async findById(id: string): Promise<IUser | null> {
+        const user = await User.findById(id);
+        return user || null;
+    }
 }
