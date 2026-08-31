@@ -21,10 +21,9 @@ app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok" });
 });
 
-app.use('/api/auth', authRouter);
+app.use('/auth', authRouter);
 app.use("/api", apiRouter);
 
-// Students: mount routes under /api (properties, users, inquiries, auth, …)
 
 const port = process.env.PORT;
 app.listen(port, () => {
